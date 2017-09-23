@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
       <el-form-item label="信息提示">
-        <span>可用额度：0</span>
+        <span style="margin-right: 20px">总代->新增</span><span>可用额度：0</span>
       </el-form-item>
       <el-form-item label="账号">
         <el-input v-model="form.name" style="width: 300px"></el-input>

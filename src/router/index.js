@@ -54,11 +54,11 @@ export const asyncRouterMap = [
     icon: 'xinrenzhinan',
     name: '分类帐',
     children: [
-      { path: 'periods', name: '期数分类帐', component: _import('ledger/periods'), meta: { role: ['admin'] }},
-      { path: 'day', name: '日分类帐', component: _import('ledger/day'), meta: { role: ['admin'] }},
-      { path: 'month', name: '月分类帐', component: _import('ledger/month'), meta: { role: ['admin'] }},
-      { path: 'contribute', name: '贡献度', component: _import('ledger/contribute'), meta: { role: ['admin'] }},
-      { path: 'weekContribute', name: '周贡献度', component: _import('ledger/weekContribute'), meta: { role: ['admin'] }}
+      { path: 'periods', name: '期数分类帐', component: _import('ledger/periods')},
+      { path: 'day', name: '日分类帐', component: _import('ledger/day')},
+      { path: 'month', name: '月分类帐', component: _import('ledger/month')},
+      { path: 'contribute', name: '贡献度', component: _import('ledger/contribute')},
+      { path: 'weekContribute', name: '周贡献度', component: _import('ledger/weekContribute')}
     ]
   },
   {
@@ -68,11 +68,11 @@ export const asyncRouterMap = [
     icon: 'tubiao',
     name: '报表',
     children: [
-      { path: 'dayPeriods', name: '日报表（期数）', component: _import('reportForm/dayPeriods'), meta: { role: ['admin'] }},
-      { path: 'day', name: '日（结）报表', component: _import('reportForm/day'), meta: { role: ['admin'] }},
-      { path: 'month', name: '月（结）报表', component: _import('reportForm/month'), meta: { role: ['admin'] }},
-      { path: 'monthDetail', name: '月结明细', component: _import('reportForm/monthDetail'), meta: { role: ['admin'] }},
-      { path: 'week', name: '周报表', component: _import('reportForm/week'), meta: { role: ['admin'] }}
+      { path: 'dayPeriods', name: '日报表（期数）', component: _import('reportForm/dayPeriods')},
+      { path: 'day', name: '日（结）报表', component: _import('reportForm/day')},
+      { path: 'month', name: '月（结）报表', component: _import('reportForm/month')},
+      { path: 'monthDetail', name: '月结明细', component: _import('reportForm/monthDetail')},
+      { path: 'week', name: '周报表', component: _import('reportForm/week')}
     ]
   },
   {
@@ -84,8 +84,8 @@ export const asyncRouterMap = [
     children: [
       { path: 'accountList', name: '账户列表', component: _import('manger/accountList'), meta: { role: ['admin'] }},
       { path: 'addChild', name: '新增下级', component: _import('manger/addChild'), meta: { role: ['admin'] }},
-      { path: 'memberList', name: '会员列表', component: _import('manger/memberList'), meta: { role: ['admin'] }},
-      { path: 'addMember', name: '新增会员', component: _import('manger/addMember'), meta: { role: ['admin'] }},
+      { path: 'memberList', name: '会员列表', component: _import('manger/memberList')},
+      { path: 'addMember', name: '新增会员', component: _import('manger/addMember')},
     ]
   },
   {
@@ -103,7 +103,7 @@ export const asyncRouterMap = [
     icon: 'bug',
     name: '日志',
     children: [
-      { path: 'basic', name: '基础日志', component: _import('log/basic'), meta: { role: ['admin'] }},
+      { path: 'basic', name: '基础日志', component: _import('log/basic')},
       { path: 'stopedSum', name: '烂货金额日志', component: _import('log/stopedSum'), meta: { role: ['admin'] }},
     ]
   },
@@ -115,9 +115,9 @@ export const asyncRouterMap = [
     name: '设置',
     children: [
       { path: 'stopedMoney', name: '拦获金额', component: _import('setting/stopedMoney'), meta: { role: ['admin'] }},
-      { path: 'basicData', name: '基本资料', component: _import('setting/basicData'), meta: { role: ['admin'] }},
+      { path: 'basicData', name: '基本资料', component: _import('setting/basicData')},
       { path: 'children', name: '子账号', component: _import('setting/children'), meta: { role: ['admin'] }},
-      { path: 'changePwd', name: '修改密码', component: _import('setting/changePwd'), meta: { role: ['admin'] }}
+      { path: 'changePwd', name: '修改密码', component: _import('setting/changePwd')}
     ]
   },
 

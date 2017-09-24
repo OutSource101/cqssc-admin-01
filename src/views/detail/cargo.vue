@@ -10,10 +10,8 @@
         <el-form-item label="">
           <el-checkbox v-model="listQuery.checked1">现</el-checkbox>
           <span style="margin-left: 10px;">列出</span>
-          <el-select @change='' style="width: 120px" class="filter-item" v-model="listQuery.sort" placeholder="排序">
-            <el-option label="金额" value="0"></el-option>
-            <el-option label="赔率" value="1"></el-option>
-            <el-option label="退码" value="2"></el-option>
+          <el-select @change='' style="width: 120px" class="filter-item" v-model="listQuery.sort">
+            <el-option v-for="item in listQuery.sortOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
           <el-input style="width: 130px;margin-left: 10px" class="filter-item" v-model="listQuery.account"></el-input>&nbsp;至
           <el-input style="width: 130px;" class="filter-item" v-model="listQuery.number"></el-input>
@@ -22,7 +20,7 @@
         <el-form-item label="">
           <span>分类</span>
           <el-select @change='' style="width: 200px" class="filter-item" v-model="listQuery.type">
-            <el-option v-for="item in listQuery.sortOptions" :key="item.key" :label="item.label" :value="item.key">
+            <el-option v-for="(item, index) in listQuery.typeOptions" :key="index" :label="item" :value="index">
             </el-option>
           </el-select>
           <span style="margin-left: 30px;">期数</span>
@@ -31,7 +29,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-button class="filter-item" type="primary" icon="search" @click="">提交</el-button>
+        <el-button class="filter-item" type="primary" icon="search" @click="handleSearch">提交</el-button>
         <el-button class="filter-item" @click="" type="primary" icon="upload">打印</el-button>
       </el-form>
 
@@ -115,11 +113,22 @@
         align="center">
       </el-table-column>
     </el-table>
+    <div style="margin-top: 20px">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        layout="total, prev, pager, next"
+        :total = "pageCount*10"
+        :page-count="pageCount">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import { getList } from '@/api/table'
+import Data from '@/api/data'
 
 export default {
   data() {
@@ -143,9 +152,19 @@ export default {
         account: '',
         number: '',
         user: null,
-        sort: '0',
-        type: '0',
+        sort: 0,
+        type: 0,
         periods: '',
+        sortOptions:[{
+          label : '金额',
+          value: 0
+        },{
+          label : '赔率',
+          value: 1
+        },{
+          label : '退码',
+          value: 2
+        }],
         periodsOptions: [{
           label: '2014444444',
           key: '0'
@@ -153,16 +172,11 @@ export default {
           label: '2014214444',
           key: '1'
         }],
-        sortOptions: [{
-          label: '全部',
-          key: '0'
-        },{
-          label: '一定位',
-          key: '1'
-        }],
+        typeOptions: Data.type,
       },
-
-      listLoading: false
+      listLoading: false,
+      currentPage: 1, //当前页
+      pageCount: 5 //总页数
     }
   },
   methods: {
@@ -174,7 +188,7 @@ export default {
           sums[index] = '合计';
           return;
         }
-        if (index === 1) {
+        if (index === 1|| index === 2|| index === 3||index ===5|| index ===12|| index===13) {
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -192,7 +206,12 @@ export default {
 
       return sums;
     },
-    handleSearch(){},
+    handleSearch(){
+      if(this.listQuery.account === ''){
+        this.$message({message: '请输入账号', type: 'warning'});
+        return
+      }
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },

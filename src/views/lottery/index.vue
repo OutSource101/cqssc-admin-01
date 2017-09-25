@@ -73,7 +73,8 @@
           :current-page.sync="currentPage"
           :page-size="100"
           layout="total, prev, pager, next"
-          :total="1000">
+          :total = "pageCount*10"
+          :page-count="pageCount">
         </el-pagination>
       </div>
   </div>
@@ -84,10 +85,9 @@ export default {
   data() {
     return {
       listLoading: false,
-      currentPage: 5,
+      currentPage: 1,
+      pageCount: 5,
       listQuery: {
-        startNum: null,
-        endNum: null,
         date: ''
       },
       list: [{
@@ -107,7 +107,6 @@ export default {
   },
   methods:{
     handleSearch(){},
-    handleSearch2(){},
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },

@@ -7,6 +7,14 @@ import router from './router'
 import store from './store'
 import '@/icons' // icon
 import '@/permission' // 权限
+import * as filters from './filters' // 全局filter
+
+
+// register global utility filters.
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
+
 
 Vue.use(ElementUI, { locale })
 

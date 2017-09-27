@@ -19,61 +19,46 @@
         element-loading-text="拼命加载中"
         border
         style="width: 100%;margin-bottom: 20px">
-        <el-table-column
-          prop="id"
-          label="期号"
-          align="center">
+        <el-table-column prop="periods" label="期号" align="center">
         </el-table-column>
-        <el-table-column
-          prop="amount1"
-          label="开奖时间"
-          align="center">
+        <el-table-column prop="openTime" label="开奖时间" align="center">
         </el-table-column>
-        <el-table-column
-          prop="amount2"
-          label="仟"
-          align="center"
-          class-name="ballblue">
+        <el-table-column label="仟" align="center" class-name="ballblue" width="100">
+          <template scope="scope">
+            <span>{{scope.row.result | splitRes(0)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="amount2"
-          label="佰"
-          align="center"
-          class-name="ballblue">
+        <el-table-column label="佰" align="center" class-name="ballblue" width="100">
+          <template scope="scope">
+            <span>{{scope.row.result | splitRes(1)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="amount2"
-          label="拾"
-          align="center"
-          class-name="ballblue">
+        <el-table-column label="拾" align="center" class-name="ballblue" width="100">
+          <template scope="scope">
+            <span>{{scope.row.result | splitRes(2)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="amount2"
-          label="个"
-          align="center"
-          class-name="ballblue">
+        <el-table-column label="个" align="center" class-name="ballblue" width="100">
+          <template scope="scope">
+            <span>{{scope.row.result | splitRes(3)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="amount2"
-          label="球五"
-          align="center"
-          class-name="ballblack">
+        <el-table-column label="球五" align="center" class-name="ballblack" width="100">
+          <template scope="scope">
+            <span>{{scope.row.result | splitRes(4)}}</span>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="amount2"
-          label="更新时间"
-          align="center">
+        <el-table-column prop="updateTime" label="更新时间" align="center">
         </el-table-column>
       </el-table>
 
       <div class="pt10" v-if="!listLoading">
         <el-pagination
-          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
+          :current-page.sync="pageNo"
           :page-size="100"
           layout="total, prev, pager, next"
-          :total = "pageCount*10"
+          :total = "pageCount*pageSize"
           :page-count="pageCount">
         </el-pagination>
       </div>
@@ -81,37 +66,55 @@
 </template>
 
 <script>
+import axios from '../../config/axios'
+
 export default {
   data() {
     return {
-      listLoading: false,
-      currentPage: 1,
-      pageCount: 5,
+      listLoading: true,
+      pageNo: 1,
+      pageSize: 10,
+      pageCount: 1,
       listQuery: {
         date: ''
       },
-      list: [{
-        id: 0,
-        amount1: 5,
-        qihao: '1111111',
-        amount2: 10
-
-      },{
-        id: 1,
-        amount1: 10,
-        qihao: '2222222',
-        amount2: 20
-
-      }],
+      list: null,
+    }
+  },
+  created(){
+    this.getData(this.pageNo-1)
+  },
+  filters:{
+    splitRes(value, n){
+      return value.split('-')[n]
     }
   },
   methods:{
     handleSearch(){},
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    getData(pageNo){//获取数据
+      var that = this;
+      that.listLoading = true;
+      axios({
+        method:'post',
+        url: '/lottery/getResult',
+        data: {
+          "pageNo": pageNo,
+          "pageSize": this.pageSize
+        }
+      }).then((res) => {
+        that.listLoading = false;
+        if(res.suc){
+          that.list = res.data.data;
+          that.pageCount = res.data.totalPage;
+        }else{
+          that.$message.error(res.msg)
+        }
+      })
+
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      //console.log(`当前页: ${val}`);
+      this.getData(val-1)
     }
   }
 

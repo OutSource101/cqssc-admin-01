@@ -8,12 +8,13 @@ const whiteList = ['/login']
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
+    console.log(to.path);
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
       if (store.getters.roles.length === 0) {
-        store.dispatch('GetInfo').then(res => {
-          const roles = res.data.role
+        store.dispatch('GetInfo').then(() => {
+          const roles = ['admin']//res.data.role;
           store.dispatch('GenerateRoutes', { roles }).then(() => {
             router.addRoutes(store.getters.addRouters)
             next({ ...to })

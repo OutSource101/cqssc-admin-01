@@ -4,7 +4,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     token: getToken(),
-    name: '',
+    userinfo: '',
     avatar: '',
     roles: []
   },
@@ -13,8 +13,8 @@ const user = {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, name) => {
-      state.name = name
+    SET_USERINFO: (state, userinfo) => {
+      state.userinfo = userinfo
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -27,12 +27,13 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      const username = userInfo.username.trim();
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          const data = response.data
-          setToken(data.token)
-          commit('SET_TOKEN', data.token)
+          const data = response.data;
+          setToken(data.token);
+          commit('SET_TOKEN', data.token);
+          //commit('SET_USERINFO',data.userinfo);
           resolve()
         }).catch(error => {
           reject(error)
@@ -41,15 +42,17 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.role)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          resolve(response)
+        getInfo().then((res) => {
+          console.log(res)
+          //const data = res.data;
+          //commit('SET_ROLES', data.role);
+          //commit('SET_NAME', data.nickName);
+          //commit('SET_AVATAR', data.avatar)
+          resolve(res)
         }).catch(error => {
+          console.log(error)
           reject(error)
         })
       })

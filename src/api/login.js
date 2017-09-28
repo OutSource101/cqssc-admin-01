@@ -1,21 +1,20 @@
 import fetch from '@/utils/fetch'
 
-export function login(username, password) {
+export function login(userName, password) {
   return fetch({
-    url: '/user/login',
+    url: '/login?userName='+userName+'&password='+password,
     method: 'post',
-    data: {
-      username,
-      password
-    }
+    // data: {
+    //   userName: userName,
+    //   password: password
+    // }
   })
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return fetch({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/sys/getUserInfo',
+    method: 'post'
   })
 }
 

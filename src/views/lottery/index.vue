@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import axios from '../../config/axios'
+import fetch from '@/utils/fetch'
 
 export default {
   data() {
@@ -94,7 +94,7 @@ export default {
     getData(pageNo){//获取数据
       var that = this;
       that.listLoading = true;
-      axios({
+      fetch({
         method:'post',
         url: '/lottery/getResult',
         data: {

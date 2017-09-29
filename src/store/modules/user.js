@@ -30,11 +30,11 @@ const user = {
           const data = response.data;
           setToken(data.token);
           commit('SET_TOKEN', data.token);
-          resolve(response)
+          resolve(response);
         }).catch(error => {
-          reject(error)
-        })
-      })
+          reject(error);
+        });
+      });
     },
     // 获取用户信息
     GetInfo({ commit }) {
@@ -43,34 +43,34 @@ const user = {
           const data = res.data;
           commit('SET_ROLES', data.role);
           commit('SET_USERINFO', data);
-          resolve(res)
+          resolve(res);
         }).catch(error => {
-          reject(error)
-        })
-      })
+          reject(error);
+        });
+      });
     },
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
-          resolve()
+        logout().then(() => {
+          commit('SET_TOKEN', '');
+          commit('SET_ROLES', []);
+          removeToken();
+          resolve();
         }).catch(error => {
-          reject(error)
-        })
-      })
-    },
+          reject(error);
+        });
+      });
+    }
 
     // 前端 登出
-    FedLogOut({ commit }) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', '')
-        removeToken()
-        resolve()
-      })
-    }
+    // FedLogOut({ commit }) {
+    //   return new Promise(resolve => {
+    //     commit('SET_TOKEN', '')
+    //     removeToken()
+    //     resolve()
+    //   })
+    // }
   }
 }
 

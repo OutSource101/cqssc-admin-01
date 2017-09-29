@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo, getLastPeriods } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -61,8 +61,17 @@ const user = {
           reject(error);
         });
       });
+    },
+    //获取最新一期
+    GetLastPeriods({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        getLastPeriods().then((res) => {
+          resolve(res);
+        }).catch(error => {
+          reject(error);
+        });
+      });
     }
-
     // 前端 登出
     // FedLogOut({ commit }) {
     //   return new Promise(resolve => {

@@ -24,3 +24,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getLastPeriods() {
+  return fetch({
+    url: '/getLastPeriods',
+    method: 'post'
+  })
+}

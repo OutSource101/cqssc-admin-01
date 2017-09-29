@@ -2,9 +2,10 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <levelbar></levelbar>
+    <Periodsbar class="periods-bar"></Periodsbar>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <span>{{ userInfo.nickName }}</span>
+        <span class="user-name">{{ userInfo.nickName }}</span>
         <img class="user-avatar" src="../../assets/avatar.gif">
         <i class="el-icon-caret-bottom"></i>
       </div>
@@ -23,11 +24,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import Levelbar from './Levelbar'
+import Periodsbar from './Periodsbar'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
     Levelbar,
+    Periodsbar,
     Hamburger
   },
   computed: {
@@ -71,6 +74,12 @@ export default {
             top: 16px;
             color: red;
         }
+        .periods-bar{
+          width: 360px;
+          position: absolute;
+          top: 0;
+          right: 20%;
+        }
         .avatar-container {
             height: 50px;
             display: inline-block;
@@ -80,6 +89,11 @@ export default {
                 cursor: pointer;
                 margin-top: 5px;
                 position: relative;
+                .user-name{
+                  position: absolute;
+                  left: -45px;
+                  top: -5px;
+                }
                 .user-avatar {
                     width: 40px;
                     height: 40px;

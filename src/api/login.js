@@ -2,12 +2,12 @@ import fetch from '@/utils/fetch'
 
 export function login(userName, password) {
   return fetch({
-    url: '/login?userName='+userName+'&password='+password,
+    url: '/login',
     method: 'post',
-    // data: {
-    //   userName: userName,
-    //   password: password
-    // }
+    params: {
+      userName: userName,
+      password: password
+    }
   })
 }
 

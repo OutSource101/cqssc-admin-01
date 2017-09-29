@@ -78,43 +78,42 @@ export default {
       listQuery: {
         date: ''
       },
-      list: null,
+      list: null
     }
   },
   created(){
-    this.getData(this.pageNo-1)
+    this.getData(this.pageNo - 1);
   },
   filters:{
-    splitRes(value, n){
+    splitRes(value, n) {
       return value.split('-')[n]
     }
   },
   methods:{
-    handleSearch(){},
-    getData(pageNo){//获取数据
+    handleSearch() {},
+    getData(pageNo) { // 获取数据
       var that = this;
       that.listLoading = true;
       fetch({
-        method:'post',
+        method: 'post',
         url: '/lottery/getResult',
         data: {
-          "pageNo": pageNo,
-          "pageSize": this.pageSize
+          'pageNo': pageNo,
+          'pageSize': this.pageSize
         }
       }).then((res) => {
         that.listLoading = false;
-        if(res.suc){
+        if (res.suc){
           that.list = res.data.data;
           that.pageCount = res.data.totalPage;
-        }else{
+        } else {
           that.$message.error(res.msg)
         }
-      })
-
+      });
     },
     handleCurrentChange(val) {
-      //console.log(`当前页: ${val}`);
-      this.getData(val-1)
+      // console.log(`当前页: ${val}`);
+      this.getData(val - 1);
     }
   }
 

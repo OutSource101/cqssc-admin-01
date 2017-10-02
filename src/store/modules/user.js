@@ -1,4 +1,4 @@
-import { login, logout, getInfo, getLastPeriods } from '@/api/login'
+import { login, logout, getInfo, getNextPeriods } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -63,9 +63,9 @@ const user = {
       });
     },
     //获取最新一期
-    GetLastPeriods({ commit, state }) {
+    GetNextPeriods({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getLastPeriods().then((res) => {
+        getNextPeriods().then((res) => {
           resolve(res);
         }).catch(error => {
           reject(error);

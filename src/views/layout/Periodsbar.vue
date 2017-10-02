@@ -9,87 +9,70 @@
 	export default {
 		name: 'Periodsbar',
 		data() {
-		  var periodsMainInterval,getInterval;
 			return {
-//			  data: {
-//          "CompanyID": "37614",
-//          "ID": "45930",
-//          "CloseDt": "2017/9/29 20:59:00",
-//          "DrawDt": "2017/9/29 21:00:00",
-//          "OpenDt": "2017/9/29 20:50:00",
-//          "PeriodsStatus": 1,
-//          "status": true,
-//          "PeriodsNumber": "20170929090",
-//          "info": "获取成功",
-//          "nowDateTime": "2017/9/29 20:58:39"
-//        },
-        data : {"CompanyID":"37614","ID":"45932","CloseDt":"2017/9/29 21:19:00","DrawDt":"2017/9/29 21:20:00","OpenDt":"2017/9/29 21:10:00","PeriodsStatus":0,"status":true,"PeriodsNumber":"20170929092","info":"获取成功","nowDateTime":"2017/9/29 21:09:53"},
-        label : ''
+        label : '',
+        getInterval: '',
+        periodsStatus: 0
       }
 		},
     created() {
-      this.handleData(this.data)
+      this.getLastPeriods();
     },
     methods: {
       getLastPeriods() {
-        console.log('getLastPeriods')
-//        this.$store.dispatch('GetLastPeriods').then((res) => {
-//          this.data = res.data;
-//        })
-      },
-      handleData(data) {
         var _this = this;
-        if(!data.status){
-          _this.label = '最近无开盘';
-        }else{
-          switch(data.PeriodsStatus){
-            case 0 :
-              var temp = new Date(data.OpenDt);
-              temp.setSeconds(temp.getSeconds() + 5);
-              _this.calcDiff(temp, data.nowDateTime, function (day, hours, minute, seconds, flags) {
-                if (flags) {
-                  _this.label = '距离[' + data.PeriodsNumber + ']期开盘还有' + day + '天' + hours + '小时' + minute + '分钟' + seconds + '秒';
-                } else {
-                  _this.label = '[正在开盘中......]';
-                  if (periodsMainInterval) {
-                    clearInterval(periodsMainInterval);
-                    periodsMainInterval = null;
-                  }
-                  if (!periodsMainInterval) {
-                    setTimeout(function (){
+        _this.$store.dispatch('GetNextPeriods').then((res) => {
+           console.log(res.data)
+          var data = res.data;
+          if(!data.status){
+            _this.label = '最近无开盘';
+          }else{
+            switch(data.PeriodsStatus){
+              case 1 :
+                var temp = new Date(data.DrawDt);
+                temp.setSeconds(temp.getSeconds() + 5);
+                _this.calcDiff(temp, data.nowDateTime, function (day, hours, minute, seconds, flags) {
+                  var tempvalue;
+                  if (flags) {
+                    tempvalue = 0;
+                    _this.label = '距离[20' + data.PeriodsNumber + ']期开盘还有' + day + '天' + hours + '小时' + minute + '分钟' + seconds + '秒';
+                  } else {
+                    tempvalue = 1;
+                    _this.label = '[正在开盘中......]';
+                    //会重复跑
+                    if(_this.periodsStatus !== tempvalue){
+                      setTimeout(function (){
                       _this.getLastPeriods()
-                      }, 5000
-                    );
-                    var periodsMainInterval = setInterval(_this.getLastPeriods(), 180000);
+                      }, 5000);
+                    }
                   }
-                }
-              })
-              break;
-            case 1:
-              var temp = new Date(data.CloseDt);
-              temp.setSeconds(temp.getSeconds() + 3);
-              _this.calcDiff(temp, data.nowDateTime, function (day, hours, minute, seconds, flags) {
-                if (flags) {
-                  _this.label = '距离[' + data.PeriodsNumber + ']期封盘还有' + day + '天' + hours + '小时' + minute + '分钟' + seconds + '秒';
-                }
-                else {
-                  _this.label = '[正在开盘中......]';
-                  if (getInterval != null) {
-                    clearInterval(getInterval);
-                    getInterval = null;
+                  _this.periodsStatus = tempvalue;
+                })
+                break;
+              case 0:
+                var temp = new Date(data.CloseDt);
+                temp.setSeconds(temp.getSeconds() + 3);
+                _this.calcDiff(temp, data.nowDateTime, function (day, hours, minute, seconds, flags) {
+                  var tempvalue;
+                  if (flags) {
+                    tempvalue = 0;
+                    _this.label = '距离[20' + data.PeriodsNumber + ']期封盘还有' + day + '天' + hours + '小时' + minute + '分钟' + seconds + '秒';
                   }
-                  if (getInterval == null) {
-                    //periods.main();
-                    setTimeout(function () {
-                      _this.getLastPeriods()
-                    }, 5000);
-                    var getInterval = setInterval(_this.getLastPeriods(), 180000);
+                  else {
+                    tempvalue = 2;
+                    _this.label = '[正在封盘中......]';
+                    if (_this.periodsStatus !== tempvalue) {
+                      setTimeout(function () {
+                        _this.getLastPeriods()
+                      }, 3000);
+                    }
                   }
-                }
-              });
-              break;
+                  _this.periodsStatus = tempvalue;
+                });
+                break;
+            }
           }
-        }
+        })
       },
       calcDiff (e, n, callback) {
         var end = new Date(e),

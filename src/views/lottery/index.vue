@@ -90,7 +90,18 @@ export default {
     }
   },
   methods:{
-    handleSearch() {},
+    formatDate(value) {
+      if(value){
+        var year = value.getFullYear();
+        var month = value.getMonth()+1<10?'0'+ (value.getMonth()+1): value.getMonth()+1;
+        var day = value.getDate()<10?'0'+ value.getDate():  value.getDate();
+        return year + '-' + month + '-' + day;
+      }
+    },
+    handleSearch() {
+      console.log(this.formatDate(this.listQuery.date[0]));
+      console.log(this.formatDate(this.listQuery.date[1]));
+    },
     getData(pageNo) { // 获取数据
       var that = this;
       that.listLoading = true;

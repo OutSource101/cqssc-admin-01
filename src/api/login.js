@@ -25,9 +25,9 @@ export function logout() {
   })
 }
 
-export function getLastPeriods() {
+export function getNextPeriods() {
   return fetch({
-    url: '/getLastPeriods',
+    url: '/lottery/getNextPeriods',
     method: 'post'
   })
 }

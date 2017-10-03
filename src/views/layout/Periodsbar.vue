@@ -22,7 +22,7 @@
       getLastPeriods() {
         var _this = this;
         _this.$store.dispatch('GetNextPeriods').then((res) => {
-           console.log(res.data)
+          // console.log(res.data)
           var data = res.data;
           if(!data.status){
             _this.label = '最近无开盘';

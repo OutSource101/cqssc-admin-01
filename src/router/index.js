@@ -40,11 +40,13 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     name: '明细',
+    meta: {id: 0},
     icon: 'zujian',
     children: [
-      { path: 'cargo', name: '总货明细', component: _import('detail/cargo') },
-      { path: 'winning', name: '中奖明细', component: _import('detail/winning') },
-      { path: 'stoped', name: '拦货明细', component: _import('detail/stoped') }
+      { path: 'cargo', name: '总货明细', component: _import('detail/cargo'), meta: {id: 7} },
+      { path: 'winning', name: '中奖明细', component: _import('detail/winning'), meta: {id: 8} },
+      { path: 'stoped', name: '拦货明细', component: _import('detail/stoped'), meta: {id: 9} }
+      //{ path: 'stoped', name: '打包拦货白单数据', component: _import('detail/stoped'), meta: {id: 10} },
     ]
   },
   {
@@ -53,12 +55,13 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     icon: 'xinrenzhinan',
     name: '分类帐',
+    meta: {id: 1},
     children: [
-      { path: 'periods', name: '期数分类帐', component: _import('ledger/periods')},
-      { path: 'day', name: '日分类帐', component: _import('ledger/day')},
-      { path: 'month', name: '月分类帐', component: _import('ledger/month')},
-      { path: 'contribute', name: '贡献度', component: _import('ledger/contribute')},
-      { path: 'weekContribute', name: '周贡献度', component: _import('ledger/weekContribute')}
+      { path: 'periods', name: '期数分类帐', component: _import('ledger/periods'), meta: {id: 10}},
+      { path: 'day', name: '日分类帐', component: _import('ledger/day'), meta: {id: 11}},
+      { path: 'month', name: '月分类帐', component: _import('ledger/month'), meta: {id: 12}},
+      { path: 'contribute', name: '贡献度', component: _import('ledger/contribute'), meta: {id: 13}},
+      { path: 'weekContribute', name: '周贡献度', component: _import('ledger/weekContribute'), meta: {id: 14}}
     ]
   },
   {
@@ -67,12 +70,13 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     icon: 'tubiao',
     name: '报表',
+    meta: {id: 2},
     children: [
-      { path: 'dayPeriods', name: '日报表（期数）', component: _import('reportForm/dayPeriods')},
-      { path: 'day', name: '日（结）报表', component: _import('reportForm/day')},
-      { path: 'month', name: '月（结）报表', component: _import('reportForm/month')},
-      { path: 'monthDetail', name: '月结明细', component: _import('reportForm/monthDetail')},
-      { path: 'week', name: '周报表', component: _import('reportForm/week')}
+      { path: 'dayPeriods', name: '日报表（期数）', component: _import('reportForm/dayPeriods'), meta: {id: 15}},
+      { path: 'day', name: '日（结）报表', component: _import('reportForm/day'), meta: {id: 16}},
+      { path: 'month', name: '月（结）报表', component: _import('reportForm/month'), meta: {id: 17}},
+      { path: 'monthDetail', name: '月结明细', component: _import('reportForm/monthDetail'), meta: {id: 18}},
+      { path: 'week', name: '周报表', component: _import('reportForm/week'),meta: {id: 19}}
     ]
   },
   {
@@ -81,11 +85,12 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     icon: 'table',
     name: '下级管理',
+    meta: {id: 3},
     children: [
-      { path: 'accountList', name: '账户列表', component: _import('manger/accountList'), meta: { role: ['admin'] }},
-      { path: 'addChild', name: '新增下级', component: _import('manger/addChild'), meta: { role: ['admin'] }},
-      { path: 'memberList', name: '会员列表', component: _import('manger/memberList')},
-      { path: 'addMember', name: '新增会员', component: _import('manger/addMember')},
+      { path: 'accountList', name: '账户列表', component: _import('manger/accountList'), meta: {id: 20}},
+      { path: 'addChild', name: '新增下级', component: _import('manger/addChild'), meta: {id: 21}},
+      { path: 'memberList', name: '会员列表', component: _import('manger/memberList'), meta: {id: 22}},
+      { path: 'addMember', name: '新增会员', component: _import('manger/addMember'), meta: {id: 23}},
     ]
   },
   {
@@ -94,6 +99,7 @@ export const asyncRouterMap = [
     redirect: '/lottery/index',
     icon: 'zonghe',
     noDropdown: true,
+    meta: {id: 4},
     children: [{ path: 'index', name: '开奖结果',component: _import('lottery/index') }]
   },
   {
@@ -102,9 +108,10 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     icon: 'bug',
     name: '日志',
+    meta: {id: 5},
     children: [
-      { path: 'basic', name: '基础日志', component: _import('log/basic')},
-      { path: 'stopedSum', name: '烂货金额日志', component: _import('log/stopedSum'), meta: { role: ['admin'] }},
+      { path: 'basic', name: '基础日志', component: _import('log/basic'), meta: {id: 24}},
+      { path: 'stopedSum', name: '烂货金额日志', component: _import('log/stopedSum'), meta: {id: 25}},
     ]
   },
   {
@@ -113,11 +120,12 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     icon: 'quanxian',
     name: '设置',
+    meta: {id: 6},
     children: [
-      { path: 'stopedMoney', name: '拦获金额', component: _import('setting/stopedMoney'), meta: { role: ['admin'] }},
-      { path: 'basicData', name: '基本资料', component: _import('setting/basicData')},
-      { path: 'children', name: '子账号', component: _import('setting/children'), meta: { role: ['admin'] }},
-      { path: 'changePwd', name: '修改密码', component: _import('setting/changePwd')}
+      { path: 'stopedMoney', name: '拦获金额', component: _import('setting/stopedMoney'), meta: {id: 26}},
+      { path: 'basicData', name: '基本资料', component: _import('setting/basicData'), meta: {id: 27}},
+      { path: 'children', name: '子账号', component: _import('setting/children'), meta: {id: 28}},
+      { path: 'changePwd', name: '修改密码', component: _import('setting/changePwd'), meta: {id: 29}}
     ]
   },
 

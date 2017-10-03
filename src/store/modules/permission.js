@@ -6,8 +6,8 @@ import { asyncRouterMap, constantRouterMap } from '@/router/index'
  * @param route
  */
 function hasPermission(roles, route) {
-  if (route.meta && route.meta.role) {
-    return roles.some(role => route.meta.role.indexOf(role) >= 0)
+  if (route.meta && route.meta.id) {
+    return roles.indexOf(route.meta.id) >= 0;
   } else {
     return true
   }
@@ -47,11 +47,11 @@ const permission = {
       return new Promise(resolve => {
         const { roles } = data
         let accessedRouters
-        if (roles.indexOf('admin') >= 0) {
-          accessedRouters = asyncRouterMap
-        } else {
+        // if (roles.indexOf('admin') >= 0) {
+        //   accessedRouters = asyncRouterMap
+        // } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        }
+        //}
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

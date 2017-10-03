@@ -52,7 +52,7 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout().then(() => {
+        logout(state.userInfo.userName).then(() => {
           commit('SET_TOKEN', '');
           commit('SET_ROLES', []);
           removeToken();

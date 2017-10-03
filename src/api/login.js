@@ -18,10 +18,13 @@ export function getInfo() {
   })
 }
 
-export function logout() {
+export function logout(userName) {
   return fetch({
     url: '/logout',
-    method: 'post'
+    method: 'post',
+    params: {
+      userName: userName
+    }
   })
 }
 

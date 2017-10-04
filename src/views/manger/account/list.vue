@@ -50,7 +50,7 @@
           <el-button class="filter-item" size="mini" @click="addMember" type="info" icon="">新增会员</el-button>
           <el-button class="filter-item" size="mini" @click="dialogFormVisible = true" type="info" icon="">编辑</el-button>
           <el-button class="filter-item" size="mini" @click="dialogPwd = true" type="info" icon="">修改密码</el-button>
-          <el-button class="filter-item" size="mini" @click="" type="info" icon="">设置限额</el-button>
+          <el-button class="filter-item" size="mini" @click="setLimit" type="info" icon="">设置限额</el-button>
           <el-button class="filter-item" size="mini" @click="" type="info" icon="">月报表</el-button>
           <el-button class="filter-item" size="mini" @click="" type="info" icon="">日志</el-button>
           <el-button class="filter-item" size="mini" @click="" type="info" icon="">拦货金额日志</el-button>
@@ -197,6 +197,10 @@ export default {
     addMember(){
       //要传代理id
       this.$router.push({path: '/manger/addMember'})
+    },
+    setLimit(){
+      //要传代理id
+      this.$router.push({path: '/manger/account/setLimit'})
     }
   }
 }

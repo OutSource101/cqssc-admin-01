@@ -88,7 +88,17 @@ export const asyncRouterMap = [
     name: '下级管理',
     meta: {id: 3},
     children: [
-      { path: 'accountList', name: '账户列表', component: _import('manger/accountList'), meta: {id: 20}},
+      {
+        path: '/manger/account',
+        redirect: '/manger/account/index',
+        component: _import('manger/account/index'),
+        meta: {id: 20},
+        noDropdown: true,
+        children: [
+          { path: 'list',name: '账户列表', component: _import('manger/account/list'), hidden: true },
+          { path: 'setLimit',name: '设置限额', component: _import('manger/account/setLimit'), hidden: true }
+        ]
+      },
       { path: 'addChild', name: '新增下级', component: _import('manger/addChild'), meta: {id: 21}},
       { path: 'memberList', name: '会员列表', component: _import('manger/memberList'), meta: {id: 22}},
       { path: 'addMember', name: '新增会员', component: _import('manger/addMember'), meta: {id: 23}},
@@ -112,7 +122,7 @@ export const asyncRouterMap = [
     meta: {id: 5},
     children: [
       { path: 'basic', name: '基础日志', component: _import('log/basic'), meta: {id: 24}},
-      { path: 'stopedSum', name: '烂货金额日志', component: _import('log/stopedSum'), meta: {id: 25}},
+      { path: 'stopedSum', name: '拦获金额日志', component: _import('log/stopedSum'), meta: {id: 25}},
     ]
   },
   {

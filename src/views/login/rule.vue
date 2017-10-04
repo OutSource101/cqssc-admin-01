@@ -3,7 +3,7 @@
     <tbody>
     <tr>
       <td valign="center" bgcolor="#ccccd4" height="18">
-        <p align="center" style="font-size: 16px; line-height: 30px; font-weight: bold;">线上投注协议 </p>
+        <p align="center" style="font-size: 16px; line-height: 30px; font-weight: bold;">免责声明</p>
       </td>
     </tr>
     <tr>
@@ -12,43 +12,24 @@
           <tbody>
           <tr>
             <td height="300" valign="top">
-              致会员<br><br>
+              致用户<br><br>
 
 
-              1.当您在下注之后，请等待下注后的成功状态信息。
+              <font color="red"><b>1.用户明确同意本系统的使用由用户个人承担风险。</b></font>
 
-              <br><br>2.为了避免出现争议，<font color="red"><b>您必须在下注之后检查 “ 下注状况 ”。</b></font>
+              <br><br>2.本系统不作任何类型的担保，不担保服务一定能满足用户的要求，也不担保服务不会受中断，对服务的及时性，安全性，出错发生都不作担保。
+              <br><br>用户理解并接受，任何通过本系统服务取得的信息资料的可靠性取决于用户自己，<font color="red"><b>用户自己承担所有风险和责任。</b></font>
 
-              <br><br>3.任何的投诉必须在开奖之前提出，<font color="red"><b>本公司不会受理任何开奖之后的投诉。</b></font>
+              <br><br>3.本声明的最终解释权归本系统所有。
+              <br>
+              <br>
+              <br>特别提醒：本公司如果输入开奖结果错误，有权利更正开奖结果，最终以官方最后公布结果来结账，不得异议。
+              <br>
+              <br>特别提醒：为了避免出现争议，请各会员到第二天早上才开始兑奖。不要当天晚上知道结果后，马上就兑奖给客人，出现当天晚上兑奖造成的损失，会员自负，不得异议。
+              <br>
+              <br>
+              <br>
 
-              <br><br>4.所有投注项目，公布赔率时出现的任何打字错误或非故意人为失误，本公司保留改正错误和按正确赔率结算投注的权力。
-
-              <br><br>5.开奖后的投注，将被视为“ 无效 ”。所有赔率将不定时浮动，<font color="red"><b>派彩时的赔率将以确认投注时之赔率为准。</b></font>
-
-              <br><br>6.敬告有意与本公司博彩之客户，应注意您所在的国家或居住地可能规定网络博彩不合法，若此情况属实，本公司将不接受任何客户因违反当地博彩或赌博法令所引起之任何责任。
-
-              <br><br>7.倘若发生遭黑客入侵破坏行为或不可抗拒之灾害导致系统故障或资料损坏，资料丢失等情况，我们将以本公司线上交易之后备资料为最后处理依据；为确保各方真实利益，请各会员交易后打印资料，本公司才接受投诉及处理。
-
-              <br><br>8.为避免纠纷，各会员在交易之后，务必进入下注明细检查，若发生任何异常，<font color="red"><b>请立即与代理商联系查证，</b></font>否则交易会员必须同意，一切交易历史将以本公司资料库中资料为准，不得异议。
-
-
-              <br><br>9.如本公司机房遇天灾，停电或不可抗力之因素,导致无法运作时,得中止所有未开奖前之投注,在本公司中止下注前,会员所有投注仍属有效,不得要求取消或延迟交收,以及不得有任何异议。
-
-              <br><br>10.如发生临时性、突发性等特殊情况,本公司有权作出相对应之决定,不得异议。
-
-              <br><br>11.本公司所有投注皆含本金,请认真了解规则说明。
-
-
-
-
-              <table width="100%" border="0" cellspacing="0" cellpadding="5">
-                <tbody>
-                <tr>
-                  <td width="5%" valign="top" align="center"></td>
-                  <td width="95%"></td>
-                </tr>
-                </tbody>
-              </table>
             </td>
           </tr>
           <tr>
@@ -56,23 +37,16 @@
               <pre></pre>
             </td>
           </tr>
-
-
           <tr>
             <td valign="top" bgcolor="#ffffff" height="21">
               <table cellspacing="0" cellpadding="0" width="69%" align="center" border="0">
                 <tbody>
                 <tr>
-                  <td width="47%" height="21" align="middle">
-                    <strong>
-                      了解以及同意以上列名的协议
-                    </strong>
-                  </td>
+                  <td width="47%" height="21" align="middle"><strong></strong> </td>
                   <td width="53%" align="left">
-                    <input  @click="gotoHome" type="button" class="button" value="不同意" name="Submit">
+                    <input @click="logOut" type="button" class="button" value="不同意" name="Submit">
                     &nbsp;&nbsp;
-                    <input @click="gotoMain" type="button" value="同意" autofocus="autofocus" id="Submit2" name="Submit2" class="button">
-
+                    <input @click="gotoMain" type="button" value="同意" id="Submit2" autofocus="autofocus" name="Submit2" class="button">
                   </td>
                 </tr>
                 </tbody>
@@ -86,6 +60,7 @@
     </tr>
     </tbody>
   </table>
+
 </template>
 
 <script>
@@ -95,7 +70,7 @@
 			return {}
 		},
     methods: {
-      gotoHome (){
+      logOut (){
         this.$store.dispatch('LogOut').then(() => {
           location.reload()  // 为了重新实例化vue-router对象 避免bug
         })

@@ -99,17 +99,24 @@ export default {
       }
     },
     handleSearch() {
-      console.log(this.formatDate(this.listQuery.date[0]));
-      console.log(this.formatDate(this.listQuery.date[1]));
+      let start = this.formatDate(this.listQuery.date[0]);
+      let end = this.formatDate(this.listQuery.date[1]);
+      if(this.listQuery.date){
+        this.getData(0,start,end)
+      }
     },
-    getData(pageNo) { // 获取数据
+    getData(pageNo , start , end) { // 获取数据
       var that = this;
+      if(!start) start = '';
+      if(!end) end = '';
       that.listLoading = true;
       fetch({
         method: 'post',
-        url: '/lottery/getResult',
+        url: '/lottery/getResultHistory',
         data: {
           'pageNo': pageNo,
+          'start' : start,
+          'end' : end,
           'pageSize': this.pageSize
         }
       }).then((res) => {

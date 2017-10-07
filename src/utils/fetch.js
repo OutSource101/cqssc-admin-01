@@ -41,11 +41,13 @@ service.interceptors.response.use(
           })
         })
       }else{
-        Message({
-          message: res.msg,
-          type: 'error',
-          duration: 3 * 1000
-        });
+        if(res.msg){
+          Message({
+            message: res.msg,
+            type: 'error',
+            duration: 3 * 1000
+          });
+        }
       }
 
       // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;

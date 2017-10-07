@@ -2,25 +2,25 @@
   <div class="app-container">
     <el-form ref="form" :model="listQuery" >
       <el-form-item label="级别查询">
-        <el-select v-model="listQuery.value" placeholder="等级类别" style="width: 120px">
+        <el-select v-model="listQuery.level" placeholder="等级类别" style="width: 120px">
           <el-option
-            v-for="item in listQuery.options"
+            v-for="item in listQuery.levelOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="listQuery.value" placeholder="状态" style="width: 120px">
+        <el-select v-model="listQuery.status" placeholder="状态" style="width: 120px">
           <el-option
-            v-for="item in listQuery.options"
+            v-for="item in listQuery.statusOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
-        <el-input style="width: 150px;" class="filter-item" placeholder="查账号" v-model="listQuery.account"></el-input>
-        <el-input style="width: 150px;" class="filter-item" placeholder="查昵称" v-model="listQuery.account"></el-input>
-        <el-button class="filter-item" @click="" type="primary" icon="search">搜索级别</el-button>
+        <el-input style="width: 150px;" class="filter-item" placeholder="查账号" v-model="listQuery.userName"></el-input>
+        <el-input style="width: 150px;" class="filter-item" placeholder="查昵称" v-model="listQuery.nickName"></el-input>
+        <el-button class="filter-item" @click="handleSearch" type="primary" icon="search">搜索级别</el-button>
       </el-form-item>
       <el-form-item label="信息提示">
         <span style="margin-right: 20px">{{userInfo.level | levelFilter}}：{{userInfo.userName}}</span><span>可用额度：{{userInfo.credit}}</span>
@@ -191,16 +191,27 @@ export default {
         credit: [{ required: true, message: '请输入信用额度', trigger: 'blur' }],
       },
       listQuery: {
-        title: null,
-        date: '',
-        options: [{
-          value: '选项1',
-          label: '所有用户'
+        userName: null,
+        nickName: '',
+        statusOptions: [{
+          value: '0',
+          label: '启用'
         }, {
-          value: '选项2',
-          label: 'admin'
+          value: '1',
+          label: '锁住'
+        }, {
+          value: '2',
+          label: '禁用'
         }],
-        value: ''
+        status: '',
+        levelOptions: [{
+          value: '3',
+          label: '代理'
+        }, {
+          value: '4',
+          label: '会员'
+        }],
+        level: '',
       }
     }
   },
@@ -238,7 +249,9 @@ export default {
         params: {
           'parentId': this.userInfo.userId,
           'pageNo' : n,
-          'pageSize': this.pageSize
+          'pageSize': this.pageSize,
+          'userName': this.listQuery.userName,
+          'nickName': this.listQuery.nickName,
         }
       }).then((res) => {
         // console.log(res)
@@ -253,7 +266,11 @@ export default {
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);
+      this.pageNo = val;
       this.getData(val - 1);
+    },
+    handleSearch(){
+      this.getList(0)
     },
     edit(row) {
       // console.log(row);

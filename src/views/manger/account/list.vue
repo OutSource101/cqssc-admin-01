@@ -23,60 +23,71 @@
         <el-button class="filter-item" @click="" type="primary" icon="search">搜索级别</el-button>
       </el-form-item>
       <el-form-item label="信息提示">
-        <span style="margin-right: 20px">总代：qq2323424</span><span>可用额度：0</span>
+        <span style="margin-right: 20px">{{userInfo.level | levelFilter}}：{{userInfo.userName}}</span><span>可用额度：{{userInfo.credit}}</span>
       </el-form-item>
     </el-form>
 
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
-      <el-table-column label='序号' align="center" prop="id"></el-table-column>
-      <el-table-column label="上级账号" align="center" prop="qihao"></el-table-column>
-      <el-table-column label="账号" align="center" prop="amount1"></el-table-column>
+      <el-table-column label='序号' align="center" type="index"></el-table-column>
+      <el-table-column label="上级账号" align="center" prop="parentUserName"></el-table-column>
+      <el-table-column label="账号" align="center" prop="userName"></el-table-column>
       <el-table-column label="直属会员" align="center" prop="amount1"></el-table-column>
-      <el-table-column label="昵称" align="center" prop="amount1"></el-table-column>
-      <el-table-column label="拦获占成上限(%)" align="center" prop="amount1" width="200">
+      <el-table-column label="昵称" align="center" prop="nickName"></el-table-column>
+      <el-table-column label="拦获占成上限(%)" align="center" prop="" width="200">
         <template scope="scope">
           总代(占)0/0 代理(占)0/0
         </template>
       </el-table-column>
-      <el-table-column label="信用额度" align="center" prop="amount2"></el-table-column>
-      <el-table-column label="状态" align="center" prop="amount1">
+      <el-table-column label="信用额度" align="center" prop="credit"></el-table-column>
+      <el-table-column label="状态" align="center" prop="status">
         <template scope="scope">
-          启用
+          <el-tag :type="scope.row.status | statusType">{{scope.row.status | statusFilter}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="ip" align="center" prop="amount2"></el-table-column>
-      <el-table-column label="操作" align="center" prop="amount1" width="300">
+      <el-table-column label="ip" align="center" prop="lastLoginIp"></el-table-column>
+      <el-table-column label="操作" align="center" prop="" width="300">
         <template scope="scope">
-          <el-button class="filter-item" size="mini" @click="addMember" type="info" icon="">新增会员</el-button>
-          <el-button class="filter-item" size="mini" @click="dialogFormVisible = true" type="info" icon="">编辑</el-button>
-          <el-button class="filter-item" size="mini" @click="dialogPwd = true" type="info" icon="">修改密码</el-button>
-          <el-button class="filter-item" size="mini" @click="setLimit" type="info" icon="">设置限额</el-button>
+          <el-button class="filter-item" size="mini" @click="addMember(scope.row)" type="info" icon="">新增会员</el-button>
+          <el-button class="filter-item" size="mini" @click="edit(scope.row)" type="info" icon="">编辑</el-button>
+          <el-button class="filter-item" size="mini" @click="dialogPwd = true;pwdForm.userId = scope.row.userId;" type="info" icon="">修改密码</el-button>
+          <el-button class="filter-item" size="mini" @click="setLimit(scope.row)" type="info" icon="">设置限额</el-button>
           <el-button class="filter-item" size="mini" @click="" type="info" icon="">月报表</el-button>
           <el-button class="filter-item" size="mini" @click="" type="info" icon="">日志</el-button>
           <el-button class="filter-item" size="mini" @click="" type="info" icon="">拦货金额日志</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <div style="padding-top: 15px" v-if="!listLoading">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page.sync="pageNo"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total = "pageCount">
+      </el-pagination>
+    </div>
+
     <!--编辑对话框-->
     <el-dialog title="编辑" :visible.sync="dialogFormVisible">
-      <el-form :model="editForm" labelWidth="100px">
+      <el-form :model="editForm" :rules="editRules" ref="editForm" labelWidth="100px">
         <el-form-item label="账号">
-          {{editForm.number}}
+          {{editForm.userName}}
         </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model="editForm.nick" auto-complete="off" style="width: 300px"></el-input>
+        <el-form-item label="昵称" prop="nickName">
+          <el-input v-model="editForm.nickName" auto-complete="off" style="width: 300px"></el-input>
         </el-form-item>
-        <el-form-item label="信用额度">
-          <el-input v-model="editForm.credit" auto-complete="off" style="width: 300px"></el-input>
+        <el-form-item label="信用额度" prop="credit">
+          <el-input type="number" v-model="editForm.credit" auto-complete="off" style="width: 300px"></el-input>
         </el-form-item>
         <el-form-item label="拦货占成上限">
-          <el-select v-model="editForm.admin" placeholder="总代" style="width: 100px">
-            <el-option label="Zone one" value="shanghai"></el-option>
-            <el-option label="Zone two" value="beijing"></el-option>
+          总代：
+          <el-select v-model="editForm.admin" style="width: 100px">
+            <el-option label="0" value="0"></el-option>
           </el-select>
-          <el-select v-model="editForm.child" placeholder="代理" style="width: 100px">
-            <el-option label="Zone one" value="shanghai"></el-option>
-            <el-option label="Zone two" value="beijing"></el-option>
+          代理：
+          <el-select v-model="editForm.child" style="width: 100px">
+            <el-option label="0" value="0"></el-option>
           </el-select>
           <br/>
           <span style="color: red">（设置占成，需要在“设置”中添加 拦货金额才生效）。提示:如果庄家先吃满,则不以所设成数来分配,以实际分配到拦货中金额为准。</span>
@@ -89,19 +100,22 @@
           </el-select>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input type="textarea" style="width: 300px" v-model="editForm.desc"></el-input>
+          <el-input type="textarea" style="width: 300px" v-model="editForm.remark"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="editSubmit('editForm')">确 定</el-button>
       </div>
     </el-dialog>
     <!--修改密码对话框-->
     <el-dialog title="修改密码" :visible.sync="dialogPwd">
       <el-form :model="pwdForm" :rules="rules" ref="pwdForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="pwdForm.pass" auto-complete="off" style="width: 300px"></el-input>
+        <el-form-item label="旧密码" prop="oldPwd">
+          <el-input type="password" v-model="pwdForm.oldPwd" auto-complete="off" style="width: 300px"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="newPwd">
+          <el-input type="password" v-model="pwdForm.newPwd" auto-complete="off" style="width: 300px"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
           <el-input type="password" v-model="pwdForm.checkPass" auto-complete="off" style="width: 300px"></el-input>
@@ -109,15 +123,15 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogPwd = false">取 消</el-button>
-        <el-button type="primary" @click="dialogPwd = false">确 定</el-button>
+        <el-button type="primary" @click="changePwdSubmit">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
-
+  import { mapGetters } from 'vuex'
+  import fetch from '@/utils/fetch'
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -133,49 +147,48 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'));
-      } else if (value !== this.pwdForm.pass) {
+      } else if (value !== this.pwdForm.newPwd) {
         callback(new Error('两次输入密码不一致!'));
       } else {
         callback();
       }
     };
     return {
-      list: [{
-        id: 0,
-        amount1: 5,
-        qihao: '2017091822',
-        amount2: 10
-
-      },{
-        id: 1,
-        amount1: 10,
-        qihao: '2017092212',
-        amount2: 20
-
-      }],
-      listLoading: false,
+      list: null,
+      listLoading: true,
+      pageNo: 1,
+      pageSize: 10,
+      pageCount: 0,
       dialogFormVisible: false,
       dialogPwd: false,
       pwdForm: {
-        pass: '',
-        checkPass: ''
+        oldPwd:'',
+        newPwd: '',
+        checkPass: '',
+        userId: ''
       },
       rules: {
-        pass: [
-          { validator: validatePass, trigger: 'blur' }
+        oldPwd: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
+        newPwd: [
+          { validator: validatePass,required: true, trigger: 'blur' }
         ],
         checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
+          { validator: validatePass2,required: true, trigger: 'blur' }
         ]
       },
       editForm:{
-        number: 'sdeqwe123',
-        nick: '',
+        userId: '',
+        userName: '',
+        nickName: '',
         credit: '',
-        admin: '',
-        child: '',
+        admin: '0',
+        child: '0',
         status: '',
-        desc: ''
+        remark: ''
+      },
+      editRules: {
+        nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+        credit: [{ required: true, message: '请输入信用额度', trigger: 'blur' }],
       },
       listQuery: {
         title: null,
@@ -191,16 +204,112 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
+  filters: {
+    levelFilter(value){
+      if(value){
+        const levelMap = ['大股东','股东','总代','代理'];
+        return levelMap[value]
+      }
+    },
+    statusFilter(status) {
+      const statusMap = ['启用','锁住','禁用'];
+      return statusMap[status]
+    },
+    statusType(status) {
+      const statusType = ['success','gray','danger'];
+      return statusType[status]
+    }
+  },
   created() {
+    this.getList(this.pageNo - 1)
   },
   methods: {
-    addMember(){
-      //要传代理id
-      this.$router.push({path: '/manger/addMember'})
+    getList(n) {
+      var _this = this;
+      _this.listLoading = true;
+      fetch({
+        method: 'post',
+        url: '/sys/getLowManageList',
+        params: {
+          'parentId': this.userInfo.userId,
+          'pageNo' : n,
+          'pageSize': this.pageSize
+        }
+      }).then((res) => {
+        // console.log(res)
+        _this.listLoading = false;
+        if(res.suc){
+          _this.list = res.data.data;
+          _this.pageCount = res.data.totalCount;
+        } else {
+          _this.$message.error(res.msg)
+        }
+      })
     },
-    setLimit(){
-      //要传代理id
-      this.$router.push({path: '/manger/account/setLimit'})
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.getData(val - 1);
+    },
+    edit(row) {
+      // console.log(row);
+      this.editForm.parentId = this.userInfo.userId;
+      this.editForm.userId = row.userId;
+      this.editForm.userName = row.userName;
+      this.editForm.nickName = row.nickName;
+      this.editForm.credit = row.credit;
+      this.editForm.status = row.status.toString();
+      this.editForm.remark = row.remark;
+      this.dialogFormVisible = true
+    },
+    editSubmit(formName){
+      let that = this;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$store.dispatch('UpdateUserInfo', this.editForm).then((res) => {
+            // console.log(res)
+            this.dialogFormVisible = false;
+            if(res.suc){
+              that.$message.success(res.msg);
+              this.getList(this.pageNo - 1)
+            }else{
+              that.$message.error(res.msg)
+            }
+          })
+        } else {
+          // console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    changePwdSubmit(){
+      let that = this;
+      this.$refs['pwdForm'].validate((valid) => {
+        if (valid) {
+          this.$store.dispatch('ChangePwdForOther', this.pwdForm).then((res) => {
+            // console.log(res)
+            this.dialogPwd = false;
+            if(res.suc){
+              that.$message.success(res.msg);
+            }else{
+              that.$message.error(res.msg)
+            }
+          })
+        } else {
+          // console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    addMember(params){
+      this.$router.push({name: '新增会员', path: '/manger/addMember', params: params})
+    },
+    setLimit(params){
+      this.$router.push({name: '设置限额', path: '/manger/account/setLimit', params: params})
     }
   }
 }

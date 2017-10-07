@@ -31,13 +31,17 @@ import { isvalidUsername } from '@/utils/validate'
 export default {
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
+    const validateName = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入账号'));
+      } else if (value.length < 3 || value.length > 12  ){
+        callback(new Error('账号长度为3-12'));
+      } else if (!(/^[A-Za-z]/.test( value ))){
+        callback(new Error('账号只能字母开头'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePass = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('密码不能小于6位'))
@@ -51,7 +55,7 @@ export default {
         password: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [{ required: true, trigger: 'blur', validator: validateName }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false

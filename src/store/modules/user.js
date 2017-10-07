@@ -1,11 +1,11 @@
-import { login, logout, getInfo, getNextPeriods } from '@/api/login'
+import { login, logout, getInfo, getNextPeriods, changePwd, changePwdForOther, updateUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { Message } from 'element-ui'
 
 const user = {
   state: {
     token: getToken(),
     userInfo: '',
-    avatar: '',
     roles: []
   },
 
@@ -41,8 +41,10 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then((res) => {
           const data = res.data;
-          commit('SET_ROLES', data.role);
-          commit('SET_USERINFO', data);
+          if(data){
+            commit('SET_ROLES', data.role);
+            commit('SET_USERINFO', data);
+          }
           resolve(res);
         }).catch(error => {
           reject(error);
@@ -71,15 +73,45 @@ const user = {
           reject(error);
         });
       });
-    }
+    },
+    //修改密码
+    ChangePwd({commit},form){
+      return new Promise((resolve, reject) => {
+        changePwd(form.userId,form.oldPwd,form.newPwd).then((res) => {
+          resolve(res);
+        }).catch(error => {
+          reject(error);
+        });
+      });
+    },
+    //修改下级密码
+    ChangePwdForOther({commit},form){
+      return new Promise((resolve, reject) => {
+        changePwdForOther(form.userId,form.oldPwd,form.newPwd).then((res) => {
+          resolve(res);
+        }).catch(error => {
+          reject(error);
+        });
+      });
+    },
+    //修改用户信息
+    UpdateUserInfo({commit},form){
+      return new Promise((resolve, reject) => {
+        updateUserInfo(form.userId,form.nickName,form.credit,form.role,form.status,form.remark).then((res) => {
+          resolve(res);
+        }).catch(error => {
+          reject(error);
+        });
+      });
+    },
     // 前端 登出
-    // FedLogOut({ commit }) {
-    //   return new Promise(resolve => {
-    //     commit('SET_TOKEN', '')
-    //     removeToken()
-    //     resolve()
-    //   })
-    // }
+    FedLogOut({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_TOKEN', '');
+        removeToken();
+        resolve()
+      })
+    }
   }
 }
 

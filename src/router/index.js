@@ -90,12 +90,13 @@ export const asyncRouterMap = [
     children: [
       {
         path: '/manger/account',
-        redirect: '/manger/account/index',
+        redirect: '/manger/account/list',
         component: _import('manger/account/index'),
-        meta: {id: 20},
         noDropdown: true,
+        name: '账户列表',
+        meta: {id: 20},
         children: [
-          { path: 'list',name: '账户列表', component: _import('manger/account/list'), hidden: true },
+          { path: 'list',name: '账户列表', component: _import('manger/account/list'),hidden: true },
           { path: 'setLimit',name: '设置限额', component: _import('manger/account/setLimit'), hidden: true }
         ]
       },
@@ -109,8 +110,9 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/lottery/index',
     icon: 'zonghe',
-    noDropdown: true,
+    name: '开奖结果',
     meta: {id: 4},
+    noDropdown: true,
     children: [{ path: 'index', name: '开奖结果',component: _import('lottery/index') }]
   },
   {

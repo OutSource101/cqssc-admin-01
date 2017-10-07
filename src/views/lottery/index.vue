@@ -113,7 +113,7 @@ export default {
       fetch({
         method: 'post',
         url: '/lottery/getResultHistory',
-        data: {
+        params: {
           'pageNo': pageNo,
           'start' : start,
           'end' : end,

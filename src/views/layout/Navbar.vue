@@ -90,9 +90,7 @@ export default {
                 margin-top: 5px;
                 position: relative;
                 .user-name{
-                  position: absolute;
-                  left: -45px;
-                  top: -5px;
+                  float: left;
                 }
                 .user-avatar {
                     width: 40px;

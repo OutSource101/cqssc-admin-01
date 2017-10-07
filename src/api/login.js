@@ -34,3 +34,42 @@ export function getNextPeriods() {
     method: 'post'
   })
 }
+
+export function changePwd(userId,oldPwd,newPwd) {
+  return fetch({
+    url: '/sys/changePwd',
+    method: 'post',
+    params: {
+      'oldPwd' : oldPwd,
+      'newPwd': newPwd,
+      'userId': userId
+    }
+  })
+}
+
+export function changePwdForOther(userId,oldPwd,newPwd) {
+  return fetch({
+    url: '/sys/changePwdForOther',
+    method: 'post',
+    params: {
+      'oldPwd' : oldPwd,
+      'newPwd': newPwd,
+      'userId': userId
+    }
+  })
+}
+
+export function updateUserInfo(userId,nickName,credit,role,status,remark) {
+  return fetch({
+    url: '/sys/updateUserInfo',
+    method: 'post',
+    params: {
+      'userId': userId,
+      'nickName': nickName,
+      'credit': credit,
+      'role': role,
+      'status': parseInt(status),
+      'remark': remark
+    }
+  })
+}

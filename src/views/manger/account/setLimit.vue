@@ -13,8 +13,10 @@
       <el-table-column label="单注上限" align="center" prop="amount1"></el-table-column>
       <el-table-column label="单项上限" align="center" prop="amount1"></el-table-column>
       <el-table-column label="拦货金额" align="center" prop="amount1"></el-table-column>
-      <el-table-column label="赚水" align="center" prop="amount2">
+      <el-table-column label="赚水"  align="center" prop="amount2">
+        <template scope="scope">
 
+        </template>
       </el-table-column>
       <el-table-column label="赔率(多个用／分开)" align="center" prop="amount1">
       </el-table-column>
@@ -47,6 +49,11 @@ export default {
   created() {
   },
   methods: {
+    renderHeader(createElement, { _self }) {
+//      return createElement(
+//        '<el-checkbox v-model="checked">赚水</el-checkbox>',
+//      )
+    },
     routerBack(){
       this.$router.go(-1);
     }

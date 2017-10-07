@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form ref="form" :rules="rules" :model="form" label-width="120px">
       <el-form-item label="信息提示">
-        <span>可用额度：0</span>
+        <span style="margin-right: 20px">{{parent.level | levelFilter}}：{{parent.userName}}->新增会员</span><span>可用额度：{{parent.credit}}</span>
       </el-form-item>
       <el-form-item label="账号" prop="name">
         <el-input v-model="form.name" style="width: 300px"></el-input>
@@ -115,6 +115,33 @@
           admin: '0',
           status: '0',
           desc: ''
+        },
+        parent : {
+          userId : '',
+          userName : '',
+          level : '',
+          credit : ''
+        }
+      }
+    },
+    created(){
+      if(this.$route.params.userId){
+        this.parent.userId = this.$route.params.userId;
+        this.parent.userName = this.$route.params.userName;
+        this.parent.level = this.$route.params.level;
+        this.parent.credit = this.$route.params.credit;
+      }else{
+        this.parent.userId = this.userInfo.userId;
+        this.parent.userName = this.userInfo.userName;
+        this.parent.level = this.userInfo.level;
+        this.parent.credit = this.userInfo.credit;
+      }
+    },
+    filters : {
+      levelFilter(value){
+        if(value){
+          const levelMap = ['大股东','股东','总代','代理'];
+          return levelMap[value]
         }
       }
     },
@@ -143,7 +170,7 @@
               method: 'post',
               url: '/user/createUser',
               params: {
-                'parentId': this.userInfo.userId,
+                'parentId': this.parent.userId,
                 'userName': this.form.name,
                 'password': this.form.checkPass,
                 'nick': this.form.nick,

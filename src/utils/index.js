@@ -56,3 +56,40 @@
      return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
    }
  }
+
+ /*
+ @max {Number}
+ @step {Number}
+ @min {Number}   default:0
+ @increase {Boolean}  默认为递减,设置为true为递增
+ return {Array}
+ */
+ export function step(max, step, min, increase) {
+   var arr = [];
+   if (typeof max !== 'number') {
+     throw new Error('max must is a number');
+   }
+   if (step - 0 === 0) {
+     return [];
+   }
+   if (typeof min === 'boolean') {
+     increase = min;
+     min = 0;
+   }
+   else {
+     min = min || 0;
+   }
+   if (increase) {
+     while (min <= max) {
+       arr.push(min);
+       min = (min + step).toFixed(9) - 0;
+     }
+   }
+   else {
+     while (max >= min) {
+       arr.push(max);
+       max = (max - step).toFixed(9) - 0;
+     }
+   }
+   return arr;
+ };

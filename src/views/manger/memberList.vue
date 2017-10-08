@@ -2,25 +2,25 @@
   <div class="app-container">
     <el-form ref="form" :model="listQuery" >
       <el-form-item label="级别查询">
-        <el-select v-model="listQuery.value" placeholder="等级类别" style="width: 120px">
+        <!--<el-select v-model="listQuery.level" placeholder="等级类别" style="width: 120px">-->
+          <!--<el-option-->
+            <!--v-for="item in listQuery.levelOptions"-->
+            <!--:key="item.value"-->
+            <!--:label="item.label"-->
+            <!--:value="item.value">-->
+          <!--</el-option>-->
+        <!--</el-select>-->
+        <el-select v-model="listQuery.status" placeholder="状态" style="width: 120px">
           <el-option
-            v-for="item in listQuery.options"
+            v-for="item in listQuery.statusOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="listQuery.value" placeholder="状态" style="width: 120px">
-          <el-option
-            v-for="item in listQuery.options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-input style="width: 150px;" class="filter-item" placeholder="查账号" v-model="listQuery.account"></el-input>
-        <el-input style="width: 150px;" class="filter-item" placeholder="查昵称" v-model="listQuery.account"></el-input>
-        <el-button class="filter-item" @click="" type="primary" icon="search">搜索级别</el-button>
+        <el-input style="width: 150px;" class="filter-item" placeholder="查账号" v-model="listQuery.userName"></el-input>
+        <el-input style="width: 150px;" class="filter-item" placeholder="查昵称" v-model="listQuery.nickName"></el-input>
+        <el-button class="filter-item" @click="handleSearch" type="primary" icon="search">搜索级别</el-button>
       </el-form-item>
       <el-form-item label="信息提示">
         <span style="margin-right: 20px">总代：qq2323424</span><span>可用额度：0</span>
@@ -70,7 +70,7 @@
           <el-input v-model="editForm.nickName" auto-complete="off" style="width: 300px"></el-input>
         </el-form-item>
         <el-form-item label="信用额度" prop="credit">
-          <el-input v-model="editForm.credit" auto-complete="off" style="width: 300px"></el-input>
+          <el-input type="number" v-model="editForm.credit" auto-complete="off" style="width: 300px"></el-input>
         </el-form-item>
         <el-form-item label="拦货占成上限">
           总代：
@@ -158,16 +158,27 @@ export default {
       pageSize: 10,
       pageCount: 0,
       listQuery: {
-        title: null,
-        date: '',
-        options: [{
-          value: '选项1',
-          label: '所有用户'
+        userName: null,
+        nickName: '',
+        statusOptions: [{
+          value: '0',
+          label: '启用'
         }, {
-          value: '选项2',
-          label: 'admin'
+          value: '1',
+          label: '锁住'
+        }, {
+          value: '2',
+          label: '禁用'
         }],
-        value: ''
+        status: '',
+//        levelOptions: [{
+//          value: '3',
+//          label: '代理'
+//        }, {
+//          value: '4',
+//          label: '会员'
+//        }],
+//        level: '',
       },
       dialogFormVisible: false,
       dialogPwd: false,
@@ -198,7 +209,8 @@ export default {
       },
       editRules: {
         nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
-        credit: [{ required: true, message: '请输入信用额度', trigger: 'blur' }],
+        credit: [{ required: true, message: '请输入信用额度' },
+                { type: 'number', message: '信用额度必须为数字值'}],
       }
     }
   },
@@ -221,14 +233,17 @@ export default {
       _this.listLoading = true;
       fetch({
         method: 'post',
-        url: '/sys/getMemberByParentId',
-        data: {
+        url: '/user/getUserList',
+        params: {
           'parentId': this.userInfo.userId,
           'pageNo' : n,
-          'pageSize': this.pageSize
+          'pageSize': this.pageSize,
+          'userName' : this.listQuery.userName,
+          'nickName' : this.listQuery.nickName,
+          'status' : this.listQuery.status,
         }
       }).then((res) => {
-        console.log(res)
+        // console.log(res)
         _this.listLoading = false;
         if(res.suc){
           _this.list = res.data.data;
@@ -242,6 +257,9 @@ export default {
       // console.log(`当前页: ${val}`);
       this.pageNo = val;
       this.getData(val - 1);
+    },
+    handleSearch(){
+      this.getList(0)
     },
     edit(row) {
       // console.log(row);

@@ -2,14 +2,14 @@
   <div class="app-container">
     <el-form ref="form" :model="listQuery" >
       <el-form-item label="级别查询">
-        <el-select v-model="listQuery.level" placeholder="等级类别" style="width: 120px">
-          <el-option
-            v-for="item in listQuery.levelOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <!--<el-select v-model="listQuery.level" placeholder="等级类别" style="width: 120px">-->
+          <!--<el-option-->
+            <!--v-for="item in listQuery.levelOptions"-->
+            <!--:key="item.value"-->
+            <!--:label="item.label"-->
+            <!--:value="item.value">-->
+          <!--</el-option>-->
+        <!--</el-select>-->
         <el-select v-model="listQuery.status" placeholder="状态" style="width: 120px">
           <el-option
             v-for="item in listQuery.statusOptions"
@@ -188,7 +188,8 @@ export default {
       },
       editRules: {
         nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
-        credit: [{ required: true, message: '请输入信用额度', trigger: 'blur' }],
+        credit: [{ required: true, message: '请输入信用额度'},
+                { type: 'number', message: '信用额度必须为数字值'}],
       },
       listQuery: {
         userName: null,
@@ -204,14 +205,14 @@ export default {
           label: '禁用'
         }],
         status: '',
-        levelOptions: [{
-          value: '3',
-          label: '代理'
-        }, {
-          value: '4',
-          label: '会员'
-        }],
-        level: '',
+//        levelOptions: [{
+//          value: '3',
+//          label: '代理'
+//        }, {
+//          value: '4',
+//          label: '会员'
+//        }],
+//        level: '',
       }
     }
   },
@@ -252,6 +253,8 @@ export default {
           'pageSize': this.pageSize,
           'userName': this.listQuery.userName,
           'nickName': this.listQuery.nickName,
+          'status': this.listQuery.status,
+          //'level': this.listQuery.level,
         }
       }).then((res) => {
         // console.log(res)

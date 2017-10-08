@@ -125,6 +125,7 @@ export default {
          console.log(res)
         _this.listLoading = false;
         if(res.suc){
+          //TODO 分出数组
           let data = res.data;
           data.forEach((item)=>{
             if(item.spaceBetween && item.maxCommission){

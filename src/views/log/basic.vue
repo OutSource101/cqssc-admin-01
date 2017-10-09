@@ -104,7 +104,7 @@ export default {
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);
       this.pageNo = val;
-      this.getData(val - 1);
+      this.getList(val - 1);
     },
   }
 }

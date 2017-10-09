@@ -61,7 +61,7 @@
     </div>
 
     <!--编辑对话框-->
-    <el-dialog title="编辑" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑" :visible.sync="dialogFormVisible" size="large">
       <el-form :model="editForm" :rules="editRules" ref="editForm" labelWidth="100px">
         <el-form-item label="账号">
           {{editForm.userName}}
@@ -209,8 +209,7 @@ export default {
       },
       editRules: {
         nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
-        credit: [{ required: true, message: '请输入信用额度' },
-                { type: 'number', message: '信用额度必须为数字值'}],
+        credit: [{ required: true, message: '请输入信用额度' }],
       }
     }
   },

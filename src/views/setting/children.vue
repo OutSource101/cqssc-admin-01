@@ -186,8 +186,7 @@ export default {
         userName: [{ required: true, message: '请输入账号', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
-        credit: [{ required: true, message: '请输入信用额度' },
-                 { type: 'number', message: '信用额度必须为数字值'}],
+        credit: [{ required: true, message: '请输入信用额度' }],
       },
       roleChecked : [
         {

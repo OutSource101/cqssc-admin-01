@@ -126,12 +126,10 @@ export default {
               item.comOptions = step(item.maxCommission,item.spaceBetween,item.beginCommission)
             }
           });
-          console.log(data);
           const two = { betTypeName: '二字定'};
           const three = { betTypeName: '三字定'};
           data.unshift(two);
           data.splice(7, 0, three);
-
           _this.list = data;
         } else {
           _this.$message.error(res.msg)
@@ -181,7 +179,35 @@ export default {
     routerBack() {
       this.$router.go(-1);
     },
-    onSubmit() {}
+    onSubmit() {
+      let that = this;
+      let list = this.list;
+      let validate = true;
+      list.shift();
+      list.splice(6, 1);
+      for (let item of list){
+        item.comOptions = null;
+        if (item.minLimitBetAmount < item.pMinLimitBetAmount) {
+          that.$message.error('最小下注不能低于限额');
+          validate = false;
+          break;
+        }
+        if (item.maxLlimitSigleBet > item.pMaxLimitSigleBet) {
+          that.$message.error('单注上限不能超过限额');
+          validate = false;
+          break;
+        }
+        if (item.maxLimitItemBet > item.pMaxLimitItemBet) {
+          that.$message.error('单项上限不能超过限额');
+          validate = false;
+          break;
+        }
+      }
+      console.log(list);
+      if (validate) {
+        alert('submit');
+      }
+    }
   }
 }
 </script>

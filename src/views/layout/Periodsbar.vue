@@ -30,9 +30,9 @@
           }else{
             switch(data.PeriodsStatus){
               case 1 :
-                var temp = new Date(data.DrawDt);
+                var temp = new Date(data.DrawDt.replace(new RegExp(/-/gm) ,"/"));
                 temp.setSeconds(temp.getSeconds() + 5);
-                _this.calcDiff(temp, data.nowDateTime, function (day, hours, minute, seconds, flags) {
+                _this.calcDiff(temp, data.nowDateTime.replace(new RegExp(/-/gm) ,"/"), function (day, hours, minute, seconds, flags) {
                   var tempvalue;
                   if (flags) {
                     tempvalue = 0;
@@ -51,9 +51,9 @@
                 })
                 break;
               case 0:
-                var temp = new Date(data.CloseDt);
+                var temp = new Date(data.CloseDt.replace(new RegExp(/-/gm) ,"/"));
                 temp.setSeconds(temp.getSeconds() + 3);
-                _this.calcDiff(temp, data.nowDateTime, function (day, hours, minute, seconds, flags) {
+                _this.calcDiff(temp, data.nowDateTime.replace(new RegExp(/-/gm) ,"/"), function (day, hours, minute, seconds, flags) {
                   var tempvalue;
                   if (flags) {
                     tempvalue = 0;

@@ -10,9 +10,9 @@
       </el-table-column>
       <el-table-column label="昵称" align="center" prop="nickName">
       </el-table-column>
-      <el-table-column label="修改时间" align="center" prop="amount1">
+      <el-table-column label="修改时间" align="center" prop="updateTime">
       </el-table-column>
-      <el-table-column label="修改者" align="center" prop="amount1">
+      <el-table-column label="修改者" align="center" prop="updateBy">
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status">
         <template scope="scope">

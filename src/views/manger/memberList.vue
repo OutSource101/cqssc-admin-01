@@ -23,7 +23,7 @@
         <el-button class="filter-item" @click="handleSearch" type="primary" icon="search">搜索级别</el-button>
       </el-form-item>
       <el-form-item label="信息提示">
-        <span style="margin-right: 20px">总代：qq2323424</span><span>可用额度：0</span>
+        <span style="margin-right: 20px">{{parent.level | levelFilter}}：{{parent.userName}}</span><span>可用额度：{{parent.credit}}</span>
       </el-form-item>
     </el-form>
 
@@ -210,21 +210,44 @@ export default {
       editRules: {
         nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
         credit: [{ required: true, message: '请输入信用额度' }],
+      },
+      parent : {
+        userId : '',
+        userName : '',
+        level : '',
+        credit : ''
       }
     }
   },
   filters: {
     statusFilter(status) {
-      const statusMap = ['启用','锁住','禁用'];
-      return statusMap[status]
+      const statusMap = ['启用', '锁住', '禁用'];
+      return statusMap[status];
     },
     statusType(status) {
-      const statusType = ['success','gray','danger'];
+      const statusType = ['success', 'gray', 'danger'];
       return statusType[status]
+    },
+    levelFilter(value) {
+      if (value) {
+        const levelMap = ['大股东', '股东', '总代', '代理'];
+        return levelMap[value];
+      }
     }
   },
   created() {
-    this.getList(this.pageNo - 1)
+    if (this.$route.params.userId) {
+      this.parent.userId = this.$route.params.userId;
+      this.parent.userName = this.$route.params.userName;
+      this.parent.level = this.$route.params.level;
+      this.parent.credit = this.$route.params.credit;
+    } else {
+      this.parent.userId = this.userInfo.userId;
+      this.parent.userName = this.userInfo.userName;
+      this.parent.level = this.userInfo.level;
+      this.parent.credit = this.userInfo.credit;
+    }
+    this.getList(this.pageNo - 1);
   },
   methods: {
     getList(n) {
@@ -234,12 +257,12 @@ export default {
         method: 'post',
         url: '/user/getUserList',
         params: {
-          'parentId': this.userInfo.userId,
-          'pageNo' : n,
+          'parentId': this.parent.userId,
+          'pageNo': n,
           'pageSize': this.pageSize,
-          'userName' : this.listQuery.userName,
-          'nickName' : this.listQuery.nickName,
-          'status' : this.listQuery.status,
+          'userName': this.listQuery.userName,
+          'nickName': this.listQuery.nickName,
+          'status': this.listQuery.status,
         }
       }).then((res) => {
         // console.log(res)

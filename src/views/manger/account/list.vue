@@ -30,8 +30,16 @@
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
       <el-table-column label='序号' align="center" type="index"></el-table-column>
       <el-table-column label="上级账号" align="center" prop="parentUserName"></el-table-column>
-      <el-table-column label="账号" align="center" prop="userName"></el-table-column>
-      <el-table-column label="直属会员" align="center" prop="amount1"></el-table-column>
+      <el-table-column label="账号" align="center" prop="userName">
+        <template scope="scope">
+          <a @click="toMember(scope.row)">{{ scope.row.userName }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column label="直属会员" align="center" prop="memberCount">
+        <template scope="scope">
+          <a @click="toMember(scope.row)">{{ scope.row.memberCount }}</a>
+        </template>
+      </el-table-column>
       <el-table-column label="昵称" align="center" prop="nickName"></el-table-column>
       <el-table-column label="拦获占成上限(%)" align="center" prop="" width="200">
         <template scope="scope">
@@ -324,11 +332,14 @@ export default {
         }
       });
     },
-    addMember(params){
-      this.$router.push({name: '新增会员', path: '/manger/addMember', params: params})
+    toMember(params) {
+      this.$router.push({ name: '会员列表', path: '/manger/memberList', params: params });
     },
-    setLimit(params){
-      this.$router.push({name: '设置限额', path: '/manger/account/setLimit', params: params})
+    addMember(params) {
+      this.$router.push({ name: '新增会员', path: '/manger/addMember', params: params });
+    },
+    setLimit(params) {
+      this.$router.push({ name: '设置限额', path: '/manger/account/setLimit', params: params });
     }
   }
 }

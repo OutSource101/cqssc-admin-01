@@ -32,12 +32,12 @@
       <el-table-column label="上级账号" align="center" prop="parentUserName"></el-table-column>
       <el-table-column label="账号" align="center" prop="userName">
         <template scope="scope">
-          <a @click="toMember(scope.row)">{{ scope.row.userName }}</a>
+          <a class="blue" @click="toMember(scope.row)">{{ scope.row.userName }}</a>
         </template>
       </el-table-column>
       <el-table-column label="直属会员" align="center" prop="memberCount">
         <template scope="scope">
-          <a @click="toMember(scope.row)">{{ scope.row.memberCount }}</a>
+          <a class="blue" @click="toMember(scope.row)">{{ scope.row.memberCount }}</a>
         </template>
       </el-table-column>
       <el-table-column label="昵称" align="center" prop="nickName"></el-table-column>
@@ -344,3 +344,7 @@ export default {
   }
 }
 </script>
+
+<style scoped="">
+  .blue{ color: #20a0ff }
+</style>

@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="listQuery" >
+      <el-form-item>
+        <el-button class="filter-item" @click="routerBack">返回</el-button>
+      </el-form-item>
       <el-form-item label="级别查询">
         <!--<el-select v-model="listQuery.level" placeholder="等级类别" style="width: 120px">-->
           <!--<el-option-->
@@ -354,6 +357,9 @@ export default {
           return false;
         }
       });
+    },
+    routerBack() {
+      this.$router.go(-1);
     }
   }
 }
